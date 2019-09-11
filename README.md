@@ -1,0 +1,2 @@
+# solQuickShift
+WoW Classic Addon
