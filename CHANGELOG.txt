@@ -1,0 +1,4 @@
+# 2019-09-14
+- ported for WOW Classic, I'm again plaing a druid - this time FTH 
+- changed several things to make it work in classic client, some things are a way different compared to 10 years ago when I left WOW 
+  
