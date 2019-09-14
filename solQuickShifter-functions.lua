@@ -1,6 +1,25 @@
 -- ////// functions
 -- this file contains only own functions
 
+
+function SQS_GetLocalization()
+  local L = {}
+  local Lmeta = {}
+  Lmeta.__newindex = function(t, k, v)
+    if v == true then -- allow for the shorter L["Foo bar"] = true
+      v = k
+    end
+    rawset(t, k, v)
+  end
+  Lmeta.__index = function(t, k)
+    self:Debug(1, "Localization not found for %", k)
+    rawset(t, k, k) -- cache it
+    return k
+  end
+  setmetatable(L, Lmeta)
+  return L
+end
+
 function SQS_UpdateButtonDisplay()
 	-- called to update the buttons if skill is castable / available or not
 	-- local forms = GetNumShapeshiftForms(); --nope, only give me amount not the real IDs
@@ -112,17 +131,18 @@ function SQS_GetMacro(FormNum)
 	-- retun the Macro to cast for each form
 	-- TODO: Language Handling
 	if FormNum == 1 then
-		return "/use [noform:"..FormNum.."] !Bärengestalt;"
+		return "/use [noform:"..FormNum.."] !"..L["SQS_1_BEAR"]
 	elseif FormNum == 2 then
-		return "/use [noform:"..FormNum.."] !Wassergestalt;"
+		return "/use [noform:"..FormNum..",swimming] !"..L["SQS_2_AQUATIC"]
 	elseif FormNum == 3 then
-		return "/use [noform:"..FormNum.."] !Katzengestalt;"
+		return "/use [form:1/2/4/5] cancelform; [noform:"..FormNum.."] !"..L["SQS_3_CAT"]
 	elseif FormNum == 4 then
-		return "/use [noform:"..FormNum.."] !Reisegestalt;"
+		return "/use [noform:"..FormNum.."] !"..L["SQS_4_TRAVEL"]
 	elseif FormNum == 5 then
-		return "/use [noform:"..FormNum.."] !Moonkin;"
-	elseif FormNum == 9 then
+		return "/use [noform:"..FormNum.."] !"..L["SQS_5_MOONKIN"]
+	else
 		return "/cancelform"
 	end
 end
 
+ 
