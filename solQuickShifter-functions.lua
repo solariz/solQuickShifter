@@ -135,7 +135,7 @@ function SQS_GetMacro(FormNum)
 	elseif FormNum == 2 then
 		return "/use [noform:"..FormNum..",swimming] !"..L["SQS_2_AQUATIC"]
 	elseif FormNum == 3 then
-		return "/use [form:1/2/4/5] cancelform; [noform:"..FormNum.."] !"..L["SQS_3_CAT"]
+		return "/use [noform:"..FormNum.."] !"..L["SQS_3_CAT"]
 	elseif FormNum == 4 then
 		return "/use [noform:"..FormNum.."] !"..L["SQS_4_TRAVEL"]
 	elseif FormNum == 5 then

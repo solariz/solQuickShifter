@@ -2,6 +2,21 @@ BINDING_HEADER_solQuickShifter = "solQuickShifter"
 _G["BINDING_NAME_CLICK solQuickShifter:LeftButton"] = "Show Shift Selection (hold key)"
 
 -- ////// MAIN
+L = {}
+if (GetLocale() == 'deDE') then
+	L["SQS_1_BEAR"] = "Bärengestalt"
+	L["SQS_2_AQUATIC"] = "Wassergestalt"
+	L["SQS_3_CAT"] = "Katzengestalt"
+	L["SQS_4_TRAVEL"] = "Reisegestalt"
+	L["SQS_5_MOONKIN"] = "Moonkingestalt"
+else
+	L["SQS_1_BEAR"] = "Bear Form"
+	L["SQS_2_AQUATIC"] = "Aquatic Form"
+	L["SQS_3_CAT"] = "Cat Form"
+	L["SQS_4_TRAVEL"] = "Travel Form"
+	L["SQS_5_MOONKIN"] = "Moonkin Form"
+end
+
 
 -- Creating the Fram where our Buttons live in
 local 	solQuickShifterFrame=CreateFrame("Frame","solQuickShifterFrame",UIParent)
@@ -12,19 +27,15 @@ local 	solQuickShifterFrame=CreateFrame("Frame","solQuickShifterFrame",UIParent)
 		solQuickShifterFrame:SetScale(1.0)
 		solQuickShifterFrame:Hide()
 
+-- register events
+	solQuickShifterFrame:RegisterEvent("PORTRAITS_UPDATED")
+	solQuickShifterFrame:SetScript("OnEvent", function(self, event, ...)
+ 		SQS_UpdateButtonDisplay()
+	end)
+
+
 local 	t=solQuickShifterFrame:CreateTexture(nil,"ARTWORK")
 		t:SetAllPoints(solQuickShifterFrame)
-
-
--- for i=1, 5 do
--- 	icon, name, active, castable, spellId = GetShapeshiftFormInfo(i);
--- 		if active then
--- 			aString = "Y"
--- 		else
--- 			aString = "N"
--- 		end
--- 		DEFAULT_CHAT_FRAME:AddMessage("SQS: i:"..i.." active:"..aString.." name:"..tostring(name));
--- end
 
 
 SQS_CreateButton(1); -- Bear/Dire Bear Form
