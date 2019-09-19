@@ -131,15 +131,15 @@ function SQS_GetMacro(FormNum)
 	-- retun the Macro to cast for each form
 	-- TODO: Language Handling
 	if FormNum == 1 then
-		return "/use [noform:"..FormNum.."] !"..L["SQS_1_BEAR"]
+		return "/cancelform\n/use [noform:"..FormNum.."] !"..L["SQS_1_BEAR"]
 	elseif FormNum == 2 then
-		return "/use [noform:"..FormNum..",swimming] !"..L["SQS_2_AQUATIC"]
+		return "/cancelform\n/use [noform:"..FormNum..",swimming] !"..L["SQS_2_AQUATIC"]
 	elseif FormNum == 3 then
-		return "/use [noform:"..FormNum.."] !"..L["SQS_3_CAT"]
+		return "/cancelform\n/use [noform:"..FormNum.."] !"..L["SQS_3_CAT"]
 	elseif FormNum == 4 then
-		return "/use [noform:"..FormNum.."] !"..L["SQS_4_TRAVEL"]
+		return "/cancelform\n/use [noform:"..FormNum.."] !"..L["SQS_4_TRAVEL"]
 	elseif FormNum == 5 then
-		return "/use [noform:"..FormNum.."] !"..L["SQS_5_MOONKIN"]
+		return "/cancelform\n/use [noform:"..FormNum.."] !"..L["SQS_5_MOONKIN"]
 	else
 		return "/cancelform"
 	end
