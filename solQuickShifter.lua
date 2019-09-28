@@ -67,4 +67,4 @@ local	toggleframe = CreateFrame("Button","solQuickShifter",UIParent,"SecureHandl
 
 
 -- ok, we're done
-DEFAULT_CHAT_FRAME:AddMessage("|cffaad372".."sol".."|cfffff468".."QuckShifter".."|cffffffff: ".."loaded");
+DEFAULT_CHAT_FRAME:AddMessage("|cffaad372".."sol".."|cfffff468".."QuickShifter".."|cffffffff: ".."loaded "..VER);
