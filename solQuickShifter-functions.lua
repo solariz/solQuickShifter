@@ -1,25 +1,6 @@
 -- ////// functions
 -- this file contains only own functions
 
-
-function SQS_GetLocalization()
-  local L = {}
-  local Lmeta = {}
-  Lmeta.__newindex = function(t, k, v)
-    if v == true then -- allow for the shorter L["Foo bar"] = true
-      v = k
-    end
-    rawset(t, k, v)
-  end
-  Lmeta.__index = function(t, k)
-    self:Debug(1, "Localization not found for %", k)
-    rawset(t, k, k) -- cache it
-    return k
-  end
-  setmetatable(L, Lmeta)
-  return L
-end
-
 function SQS_UpdateButtonDisplay()
 	-- called to update the buttons if skill is castable / available or not
 	-- local forms = GetNumShapeshiftForms(); --nope, only give me amount not the real IDs
@@ -34,14 +15,59 @@ function SQS_UpdateButtonDisplay()
 			elseif i == 5 then SQS_BTN_5:Hide(); 
 			end;
 		else
-			if i == 1 then SQS_BTN_1:Show(); 
-			elseif i == 2 then SQS_BTN_2:Show(); 
-			elseif i == 3 then SQS_BTN_3:Show();
-			elseif i == 4 then SQS_BTN_4:Show(); 
-			elseif i == 5 then SQS_BTN_5:Show(); 
+			if i == 1 then 
+				SQS_BTN_1:Show();
+				SQS_BTN_1.Texture:SetDesaturated(SQS_CheckNoMana(i));
+			elseif i == 2 then 
+				SQS_BTN_2:Show();
+				SQS_BTN_2.Texture:SetDesaturated(SQS_CheckNoMana(i));
+			elseif i == 3 then 
+				SQS_BTN_3:Show();
+				SQS_BTN_3.Texture:SetDesaturated(SQS_CheckNoMana(i));
+			elseif i == 4 then 
+				SQS_BTN_4:Show(); 
+				SQS_BTN_4.Texture:SetDesaturated(SQS_CheckNoMana(i));
+			elseif i == 5 then 
+				SQS_BTN_5:Show(); 
+				SQS_BTN_5.Texture:SetDesaturated(SQS_CheckNoMana(i));
 			end;
 		end
 	end
+end
+
+function SQS_CheckNoMana(FormNum)
+	-- checking if the spell is actually castable atm
+	-- we return true if NOT and false if. sounds weird
+	-- but I use that for the desaturate function, see in calling 
+	-- function SQS_UpdateButtonDisplay
+	local SpellName, usable, nomana;
+	if FormNum == 1 then 
+		-- exception here because we have bear and dire bear
+		usable, nomana = IsUsableSpell(L["SQS_1_BEAR"]);
+		if nomana == true then 
+			return true
+		end
+		usable, nomana = IsUsableSpell(L["SQS_1_DIREBEAR"]);
+		if nomana == true then 
+			return true
+		end
+	end
+		
+	-- now the others
+	if FormNum == 2 then SpellName = L["SQS_2_AQUATIC"]
+	elseif FormNum == 3 then SpellName = L["SQS_3_CAT"]
+	elseif FormNum == 4 then SpellName = L["SQS_4_TRAVEL"]
+	elseif FormNum == 5 then SpellName = L["SQS_5_MOONKIN"]
+	end
+
+	-- check
+	usable, nomana = IsUsableSpell(SpellName);
+	if nomana == true then 
+		return true
+	end
+
+	-- no break? we assume is usable
+	return false
 end
 
 function SQS_CreateButton(FormNum)
@@ -131,15 +157,15 @@ function SQS_GetMacro(FormNum)
 	-- retun the Macro to cast for each form
 	-- TODO: Language Handling
 	if FormNum == 1 then
-		return "/cancelform [noform:"..FormNum.."]\n/use [noform:"..FormNum.."] !"..L["SQS_1_DIREBEAR"].."\n/use [noform:"..FormNum.."]"..L["SQS_1_BEAR"]
+		return "/dismount [mounted]\n/cancelform [noform:"..FormNum.."]\n/use [noform:"..FormNum.."] !"..L["SQS_1_DIREBEAR"].."\n/use [noform:"..FormNum.."]"..L["SQS_1_BEAR"]
 	elseif FormNum == 2 then
-		return "/cancelform [noform:"..FormNum.."]\n/use [noform:"..FormNum..",swimming] !"..L["SQS_2_AQUATIC"]
+		return "/dismount [mounted]\n/cancelform [noform:"..FormNum.."]\n/use [noform:"..FormNum..",swimming] !"..L["SQS_2_AQUATIC"]
 	elseif FormNum == 3 then
-		return "/cancelform [noform:"..FormNum.."]\n/use [noform:"..FormNum.."] !"..L["SQS_3_CAT"]
+		return "/dismount [mounted]\n/cancelform [noform:"..FormNum.."]\n/use [noform:"..FormNum.."] !"..L["SQS_3_CAT"]
 	elseif FormNum == 4 then
-		return "/cancelform [noform:"..FormNum.."]\n/use [noform:"..FormNum.."] !"..L["SQS_4_TRAVEL"]
+		return "/dismount [mounted]\n/cancelform [noform:"..FormNum.."]\n/use [noform:"..FormNum.."] !"..L["SQS_4_TRAVEL"]
 	elseif FormNum == 5 then
-		return "/cancelform [noform:"..FormNum.."]\n/use [noform:"..FormNum.."] !"..L["SQS_5_MOONKIN"]
+		return "/dismount [mounted]\n/cancelform [noform:"..FormNum.."]\n/use [noform:"..FormNum.."] !"..L["SQS_5_MOONKIN"]
 	else
 		return "/cancelform"
 	end

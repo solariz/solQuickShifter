@@ -33,6 +33,7 @@ local 	solQuickShifterFrame=CreateFrame("Frame","solQuickShifterFrame",UIParent)
 
 -- register events
 	solQuickShifterFrame:RegisterEvent("PORTRAITS_UPDATED")
+	solQuickShifterFrame:RegisterEvent("UNIT_POWER_UPDATE")
 	solQuickShifterFrame:SetScript("OnEvent", function(self, event, ...)
  		SQS_UpdateButtonDisplay()
 	end)

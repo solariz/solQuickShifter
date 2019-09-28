@@ -3,5 +3,8 @@
 ## Author: solariz.de
 ## Version: 2.02
 ## Notes: a quick way to shift druid forms via hotkey (wow:Classic)
+## X-Website: solariz.de
+## X-Category: Druid
+## X-Curse-Project-ID: 2289
 solQuickShifter-functions.lua
 solQuickShifter.lua
