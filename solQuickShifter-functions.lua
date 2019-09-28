@@ -131,15 +131,15 @@ function SQS_GetMacro(FormNum)
 	-- retun the Macro to cast for each form
 	-- TODO: Language Handling
 	if FormNum == 1 then
-		return "/cancelform\n/use [noform:"..FormNum.."] !"..L["SQS_1_BEAR"]
+		return "/cancelform [noform:"..FormNum.."]\n/use [noform:"..FormNum.."] !"..L["SQS_1_DIREBEAR"].."\n/use [noform:"..FormNum.."]"..L["SQS_1_BEAR"]
 	elseif FormNum == 2 then
-		return "/cancelform\n/use [noform:"..FormNum..",swimming] !"..L["SQS_2_AQUATIC"]
+		return "/cancelform [noform:"..FormNum.."]\n/use [noform:"..FormNum..",swimming] !"..L["SQS_2_AQUATIC"]
 	elseif FormNum == 3 then
-		return "/cancelform\n/use [noform:"..FormNum.."] !"..L["SQS_3_CAT"]
+		return "/cancelform [noform:"..FormNum.."]\n/use [noform:"..FormNum.."] !"..L["SQS_3_CAT"]
 	elseif FormNum == 4 then
-		return "/cancelform\n/use [noform:"..FormNum.."] !"..L["SQS_4_TRAVEL"]
+		return "/cancelform [noform:"..FormNum.."]\n/use [noform:"..FormNum.."] !"..L["SQS_4_TRAVEL"]
 	elseif FormNum == 5 then
-		return "/cancelform\n/use [noform:"..FormNum.."] !"..L["SQS_5_MOONKIN"]
+		return "/cancelform [noform:"..FormNum.."]\n/use [noform:"..FormNum.."] !"..L["SQS_5_MOONKIN"]
 	else
 		return "/cancelform"
 	end

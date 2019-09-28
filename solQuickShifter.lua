@@ -1,16 +1,20 @@
 BINDING_HEADER_solQuickShifter = "solQuickShifter"
 _G["BINDING_NAME_CLICK solQuickShifter:LeftButton"] = "Show Shift Selection (hold key)"
 
+VER = "2.02"
+
 -- ////// MAIN
 L = {}
 if (GetLocale() == 'deDE') then
 	L["SQS_1_BEAR"] = "Bärengestalt"
+	L["SQS_1_DIREBEAR"] = "Terrorbärengestalt"
 	L["SQS_2_AQUATIC"] = "Wassergestalt"
 	L["SQS_3_CAT"] = "Katzengestalt"
 	L["SQS_4_TRAVEL"] = "Reisegestalt"
 	L["SQS_5_MOONKIN"] = "Moonkingestalt"
 else
 	L["SQS_1_BEAR"] = "Bear Form"
+	L["SQS_1_DIREBEAR"] = "Dire Bear Form"
 	L["SQS_2_AQUATIC"] = "Aquatic Form"
 	L["SQS_3_CAT"] = "Cat Form"
 	L["SQS_4_TRAVEL"] = "Travel Form"
