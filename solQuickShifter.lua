@@ -2,6 +2,8 @@ BINDING_HEADER_solQuickShifter = "solQuickShifter"
 _G["BINDING_NAME_CLICK solQuickShifter:LeftButton"] = "Show Shift Selection (hold key)"
 
 VER = "2.02"
+addon = "|cffaad372".."sol".."|cfffff468".."QuickShifter".."|cffffffff v"..VER;
+
 
 -- ////// MAIN
 L = {}
@@ -34,10 +36,23 @@ local 	solQuickShifterFrame=CreateFrame("Frame","solQuickShifterFrame",UIParent)
 -- register events
 	solQuickShifterFrame:RegisterEvent("PORTRAITS_UPDATED")
 	solQuickShifterFrame:RegisterEvent("UNIT_POWER_UPDATE")
-	solQuickShifterFrame:SetScript("OnEvent", function(self, event, ...)
- 		SQS_UpdateButtonDisplay()
+	solQuickShifterFrame:RegisterEvent("ADDON_LOADED")
+	solQuickShifterFrame:SetScript("OnEvent", function(self, event, arg1, ...)
+		if event == "ADDON_LOADED" and arg1 == "solQuickShifter" then
+			-- initialize storage
+			--if SQS == nil then
+			if not type(SQS) then
+				SQS = {}
+				SQS.OOM = true
+				DEFAULT_CHAT_FRAME:AddMessage(addon.." Settings default set.")
+			else
+				DEFAULT_CHAT_FRAME:AddMessage(addon.." Settings loaded.")
+			end
+			_G["SQS"] = SQS
+		else
+			SQS_UpdateButtonDisplay()
+		end
 	end)
-
 
 local 	t=solQuickShifterFrame:CreateTexture(nil,"ARTWORK")
 		t:SetAllPoints(solQuickShifterFrame)
@@ -49,7 +64,7 @@ SQS_CreateButton(3); -- Cat Form
 SQS_CreateButton(4); -- Travel Form
 SQS_CreateButton(5); -- Moonkin Form
 SQS_CreateButton(9); -- cancel form
-SQS_UpdateButtonDisplay()
+--SQS_UpdateButtonDisplay()
 
 -- activation when pressing hotkey
 local	toggleframe = CreateFrame("Button","solQuickShifter",UIParent,"SecureHandlerClickTemplate")
@@ -68,4 +83,3 @@ local	toggleframe = CreateFrame("Button","solQuickShifter",UIParent,"SecureHandl
 
 
 -- ok, we're done
-DEFAULT_CHAT_FRAME:AddMessage("|cffaad372".."sol".."|cfffff468".."QuickShifter".."|cffffffff: ".."loaded "..VER);

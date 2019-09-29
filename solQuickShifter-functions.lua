@@ -17,7 +17,7 @@ function SQS_UpdateButtonDisplay()
 		else
 			if i == 1 then 
 				SQS_BTN_1:Show();
-				SQS_BTN_1.Texture:SetDesaturated(SQS_CheckNoMana(i));
+				SQS_BTN_1.Texture:SetDesaturated(SQS_CheckNoMana(i))
 			elseif i == 2 then 
 				SQS_BTN_2:Show();
 				SQS_BTN_2.Texture:SetDesaturated(SQS_CheckNoMana(i));
@@ -40,6 +40,11 @@ function SQS_CheckNoMana(FormNum)
 	-- we return true if NOT and false if. sounds weird
 	-- but I use that for the desaturate function, see in calling 
 	-- function SQS_UpdateButtonDisplay
+
+	if SQS.OOM then
+		return false
+	end
+
 	local SpellName, usable, nomana;
 	if FormNum == 1 then 
 		-- exception here because we have bear and dire bear
