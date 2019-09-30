@@ -1,6 +1,8 @@
 # 2019-09-28    v2.02
-- added support for dire bear form - wasn't 40 until now didn't rememberd we have a change here :) Thanks to Marleyoneluv for reportiog
+- added support for dire bear form - Thanks to Marleyoneluv for reportiog
 - added conditional for cancelform. Makes no sense to cancel and recast same form. So if you choose the form you are already in, nothing will happen
+- added mana check (can be disabled in menu) still experimental
+- added settings menu
 
 # 2019-09-14
 - ported for WOW Classic, I'm again plaing a druid - this time FTH 
