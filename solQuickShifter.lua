@@ -1,12 +1,12 @@
 BINDING_HEADER_solQuickShifter = "solQuickShifter"
 _G["BINDING_NAME_CLICK solQuickShifter:LeftButton"] = "Show Shift Selection (hold key)"
 
-VER = "2.02"
+VER = "2.03"
 addon = "|cffaad372".."sol".."|cfffff468".."QuickShifter".."|cffffffff v"..VER;
-
 
 -- ////// MAIN
 L = {}
+SQS_LOADED = false;
 if (GetLocale() == 'deDE') then
 	L["SQS_1_BEAR"] = "Bärengestalt"
 	L["SQS_1_DIREBEAR"] = "Terrorbärengestalt"
@@ -49,8 +49,17 @@ local 	solQuickShifterFrame=CreateFrame("Frame","solQuickShifterFrame",UIParent)
 				DEFAULT_CHAT_FRAME:AddMessage(addon.." Settings loaded.")
 			end
 			_G["SQS"] = SQS
+			SQS_CreateButton(1); -- Bear/Dire Bear Form
+			SQS_CreateButton(2); -- Aquatic Form
+			SQS_CreateButton(3); -- Cat Form
+			SQS_CreateButton(4); -- Travel Form
+			SQS_CreateButton(5); -- Moonkin Form
+			SQS_CreateButton(9); -- cancel form
+			SQS_LOADED = true;
 		else
-			SQS_UpdateButtonDisplay()
+			if SQS_LOADED == true and type(SQS) then
+				SQS_UpdateButtonDisplay()
+			end
 		end
 	end)
 
@@ -58,12 +67,7 @@ local 	t=solQuickShifterFrame:CreateTexture(nil,"ARTWORK")
 		t:SetAllPoints(solQuickShifterFrame)
 
 
-SQS_CreateButton(1); -- Bear/Dire Bear Form
-SQS_CreateButton(2); -- Aquatic Form
-SQS_CreateButton(3); -- Cat Form
-SQS_CreateButton(4); -- Travel Form
-SQS_CreateButton(5); -- Moonkin Form
-SQS_CreateButton(9); -- cancel form
+
 --SQS_UpdateButtonDisplay()
 
 -- activation when pressing hotkey

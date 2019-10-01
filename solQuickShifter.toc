@@ -1,7 +1,7 @@
 ## Interface: 11302
 ## Title: solQuickShifter |cffaad372v2.02
 ## Author: solariz.de
-## Version: 2.02
+## Version: 2.03
 ## Notes: a quick way to shift druid forms via hotkey (wow:Classic)
 ## SavedVariables: SQS
 ## X-Website: solariz.de

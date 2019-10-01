@@ -40,11 +40,14 @@ function SQS_CheckNoMana(FormNum)
 	-- we return true if NOT and false if. sounds weird
 	-- but I use that for the desaturate function, see in calling 
 	-- function SQS_UpdateButtonDisplay
-
-	if SQS.OOM then
+	if not type(SQS) then
 		return false
 	end
-
+	
+	if SQS.OOM == true then
+		return false 
+	end
+	-- DEFAULT_CHAT_FRAME:AddMessage(addon.." oom check:"..type(SQS.OOM)..":"..tostring(SQS.OOM))
 	local SpellName, usable, nomana;
 	if FormNum == 1 then 
 		-- exception here because we have bear and dire bear
