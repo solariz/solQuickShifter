@@ -1,6 +1,4 @@
-﻿
-local addon, private = ...
-local version = GetAddOnMetadata(addon, "Version");
+﻿local addon, private = ...
 
 local Options = CreateFrame("Frame", "SQSOptions", InterfaceOptionsFramePanelContainer);
 Options.name = addon;
@@ -37,18 +35,27 @@ Options:SetScript("OnShow", function(self)
 	-- Text
 	local TextOptions = self:CreateFontString("$parentTitleOptions", "ARTWORK", "GameFontNormalSmall");
 	TextOptions:SetPoint("TOPLEFT", TitleOptions, "BOTTOMLEFT", 0, -12);
-	TextOptions:SetText("I keep this Addon minimalistic, so the options here a rather tiny compared to some other addons.\n|rActually I currently add just some toggle for experimental features.\n|rFor mor Information please read and comment on the Curseforge project website or github.\n\n|r|r|cffa330c9- And so fate shall provide you with epic drops -\n\n|r|r|cffaad372Thanks\nAuthor: Wildnis  (druid, EU-Lakeshire, Horde)\n|r");
+	TextOptions:SetText("|lI keep this Addon minimalistic, so the options here a rather tiny compared to some other addons.\nActually I currently add just some toggle for experimental features.\nFor mor Information please read and comment on the Curseforge project website or github.\n\n|cffa330c9- And so fate shall provide you with epic drops -\n\n|cffaad372Thanks\nAuthor: Wildnis  (druid, EU-Lakeshire, Horde)\n");
 
-	-- Display On/Off
+	-- Display On/Off OOM
 	local DisplayLock = makeCheckbox(
 		"OOM Display",									-- label
 		"Shapeshift button will be gray if out of Mana. (experimental)",	-- description
 		function(self, value)
-			SQS.OOM = not value
+			SQS.OOM = value
 		end);	-- onClick
-	DisplayLock:SetChecked(not SQS.OOM);
+	DisplayLock:SetChecked(SQS.OOM);
 	DisplayLock:SetPoint("TOPLEFT", TextOptions, "BOTTOMLEFT", 0, -12);
-	
+
+		-- Display On/Off Powershift
+	local DisplayLock2 = makeCheckbox(
+		"Powershift",									-- label
+		"If Enabled you can Powershift by selecting the same form you are already in. Game than will shift you back to caster and in same form again. If Disabled the button will ignore the click if you are already in this form. (experimental, reload required to activate)",	-- description
+		function(self, value)
+			SQS.PWRSHIFT = value
+		end);	-- onClick
+	DisplayLock2:SetChecked(SQS.PWRSHIFT);
+	DisplayLock2:SetPoint("TOPLEFT", DisplayLock, "BOTTOMLEFT", 0, -12);
 
 	self:SetScript("OnShow", nil);
 end);

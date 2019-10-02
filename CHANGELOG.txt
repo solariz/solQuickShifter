@@ -1,5 +1,7 @@
 # 2019-10-01    v2.03
 - fix for option lua error
+- minor changes for var Storage
+- added the option powershift (Menu > Interface > Addons > solQuickShift)
 
 # 2019-09-28    v2.02
 - added support for dire bear form - Thanks to Marleyoneluv for reportiog

@@ -44,9 +44,10 @@ function SQS_CheckNoMana(FormNum)
 		return false
 	end
 	
-	if SQS.OOM == true then
+	if SQS.OOM ~= true then
 		return false 
 	end
+
 	-- DEFAULT_CHAT_FRAME:AddMessage(addon.." oom check:"..type(SQS.OOM)..":"..tostring(SQS.OOM))
 	local SpellName, usable, nomana;
 	if FormNum == 1 then 
@@ -121,7 +122,7 @@ function SQS_CreateButton(FormNum)
 	-- using macro workaround, thanks bliz classic != classic, old function CastShapeshiftForm() is forbidden now :(
 	-- this is specially shitty because all the stance/form names are translated to the client language
 	-- so you cant just use a /cast cat form. Each language this "cat form" is different. In German it would be:
-	-- /wirken Katengestalt; luckily you can use /use and only need to translate the form name :(
+	-- /wirken Katzengestalt; luckily you can use /use and only need to translate the form name :(
 	Button:SetAttribute("type","macro")
 	Button:SetAttribute("macrotext",SQS_GetMacro(FormNum))
 end
@@ -163,17 +164,22 @@ end
 
 function SQS_GetMacro(FormNum)
 	-- retun the Macro to cast for each form
-	-- TODO: Language Handling
+	
+	local PowerShiftMacro = ""
+	if SQS.PWRSHIFT ~= true then
+		PowerShiftMacro = " [noform:"..FormNum.."]"
+	end
+
 	if FormNum == 1 then
-		return "/dismount [mounted]\n/cancelform [noform:"..FormNum.."]\n/use [noform:"..FormNum.."] !"..L["SQS_1_DIREBEAR"].."\n/use [noform:"..FormNum.."]"..L["SQS_1_BEAR"]
+		return "/dismount [mounted]\n/cancelform"..PowerShiftMacro.."\n/use [noform:"..FormNum.."] !"..L["SQS_1_DIREBEAR"].."\n/use [noform:"..FormNum.."]"..L["SQS_1_BEAR"]
 	elseif FormNum == 2 then
-		return "/dismount [mounted]\n/cancelform [noform:"..FormNum.."]\n/use [noform:"..FormNum..",swimming] !"..L["SQS_2_AQUATIC"]
+		return "/dismount [mounted]\n/cancelform"..PowerShiftMacro.."\n/use [noform:"..FormNum..",swimming] !"..L["SQS_2_AQUATIC"]
 	elseif FormNum == 3 then
-		return "/dismount [mounted]\n/cancelform [noform:"..FormNum.."]\n/use [noform:"..FormNum.."] !"..L["SQS_3_CAT"]
+		return "/dismount [mounted]\n/cancelform"..PowerShiftMacro.."\n/use [noform:"..FormNum.."] !"..L["SQS_3_CAT"]
 	elseif FormNum == 4 then
-		return "/dismount [mounted]\n/cancelform [noform:"..FormNum.."]\n/use [noform:"..FormNum.."] !"..L["SQS_4_TRAVEL"]
+		return "/dismount [mounted]\n/cancelform"..PowerShiftMacro.."\n/use [noform:"..FormNum.."] !"..L["SQS_4_TRAVEL"]
 	elseif FormNum == 5 then
-		return "/dismount [mounted]\n/cancelform [noform:"..FormNum.."]\n/use [noform:"..FormNum.."] !"..L["SQS_5_MOONKIN"]
+		return "/dismount [mounted]\n/cancelform"..PowerShiftMacro.."\n/use [noform:"..FormNum.."] !"..L["SQS_5_MOONKIN"]
 	else
 		return "/cancelform"
 	end

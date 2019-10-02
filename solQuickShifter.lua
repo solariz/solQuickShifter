@@ -44,11 +44,13 @@ local 	solQuickShifterFrame=CreateFrame("Frame","solQuickShifterFrame",UIParent)
 			if not type(SQS) or SQS == nil then
 				SQS = {}
 				SQS.OOM = true
+				SQS.PWRSHIFT = false
 				DEFAULT_CHAT_FRAME:AddMessage(addon.." Settings default set.")
+				_G["SQS"] = SQS
 			else
 				DEFAULT_CHAT_FRAME:AddMessage(addon.." Settings loaded.")
 			end
-			_G["SQS"] = SQS
+			SQS.VER = VER
 			SQS_CreateButton(1); -- Bear/Dire Bear Form
 			SQS_CreateButton(2); -- Aquatic Form
 			SQS_CreateButton(3); -- Cat Form
