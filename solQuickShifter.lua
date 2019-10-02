@@ -41,7 +41,7 @@ local 	solQuickShifterFrame=CreateFrame("Frame","solQuickShifterFrame",UIParent)
 		if event == "ADDON_LOADED" and arg1 == "solQuickShifter" then
 			-- initialize storage
 			--if SQS == nil then
-			if not type(SQS) then
+			if not type(SQS) or SQS == nil then
 				SQS = {}
 				SQS.OOM = true
 				DEFAULT_CHAT_FRAME:AddMessage(addon.." Settings default set.")

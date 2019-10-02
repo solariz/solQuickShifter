@@ -40,7 +40,7 @@ function SQS_CheckNoMana(FormNum)
 	-- we return true if NOT and false if. sounds weird
 	-- but I use that for the desaturate function, see in calling 
 	-- function SQS_UpdateButtonDisplay
-	if not type(SQS) then
+	if not type(SQS) or SQS == nil then
 		return false
 	end
 	
