@@ -1,7 +1,7 @@
 BINDING_HEADER_solQuickShifter = "solQuickShifter"
 _G["BINDING_NAME_CLICK solQuickShifter:LeftButton"] = "Show Shift Selection (hold key)"
 
-VER = "2.03"
+VER = "2.04"
 addon = "|cffaad372".."sol".."|cfffff468".."QuickShifter".."|cffffffff v"..VER;
 
 -- ////// MAIN
@@ -25,18 +25,25 @@ end
 
 
 -- Creating the Fram where our Buttons live in
-local 	solQuickShifterFrame=CreateFrame("Frame","solQuickShifterFrame",UIParent)
+     	solQuickShifterFrame=CreateFrame("Frame","solQuickShifterFrame",UIParent)
 		solQuickShifterFrame:SetClampedToScreen( true )
 		solQuickShifterFrame:SetMovable(true)
 		solQuickShifterFrame:EnableMouse(true)
 		solQuickShifterFrame:SetSize(100,100)
 		solQuickShifterFrame:SetScale(1.0)
 		solQuickShifterFrame:Hide()
+		-- Warning Global Cooldown / Casting
+		solQuickShifterFrameGCD = solQuickShifterFrame:CreateFontString("$parentTitleOptions", "ARTWORK", "GameFontNormalSmall");
+		solQuickShifterFrameGCD:SetPoint("TOPLEFT", solQuickShifterFrame, "BOTTOMLEFT", -20, -2);
+		solQuickShifterFrameGCD:SetText("* Casting / Global Cooldown *");
+		solQuickShifterFrameGCD:Hide()
 
 -- register events
 	solQuickShifterFrame:RegisterEvent("PORTRAITS_UPDATED")
 	solQuickShifterFrame:RegisterEvent("UNIT_POWER_UPDATE")
 	solQuickShifterFrame:RegisterEvent("ADDON_LOADED")
+	solQuickShifterFrame:RegisterEvent("ACTIONBAR_UPDATE_COOLDOWN")
+
 	solQuickShifterFrame:SetScript("OnEvent", function(self, event, arg1, ...)
 		if event == "ADDON_LOADED" and arg1 == "solQuickShifter" then
 			-- initialize storage
@@ -44,6 +51,7 @@ local 	solQuickShifterFrame=CreateFrame("Frame","solQuickShifterFrame",UIParent)
 			if not type(SQS) or SQS == nil then
 				SQS = {}
 				SQS.OOM = true
+				SQS.GCD = true
 				SQS.PWRSHIFT = false
 				DEFAULT_CHAT_FRAME:AddMessage(addon.." Settings default set.")
 				_G["SQS"] = SQS
@@ -61,6 +69,7 @@ local 	solQuickShifterFrame=CreateFrame("Frame","solQuickShifterFrame",UIParent)
 		else
 			if SQS_LOADED == true and type(SQS) then
 				SQS_UpdateButtonDisplay()
+				SQS_IsGlobalCooldown()
 			end
 		end
 	end)

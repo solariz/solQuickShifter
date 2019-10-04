@@ -47,7 +47,7 @@ Options:SetScript("OnShow", function(self)
 	DisplayLock:SetChecked(SQS.OOM);
 	DisplayLock:SetPoint("TOPLEFT", TextOptions, "BOTTOMLEFT", 0, -12);
 
-		-- Display On/Off Powershift
+	-- Display On/Off Powershift
 	local DisplayLock2 = makeCheckbox(
 		"Powershift",									-- label
 		"If Enabled you can Powershift by selecting the same form you are already in. Game than will shift you back to caster and in same form again. If Disabled the button will ignore the click if you are already in this form. (experimental, reload required to activate)",	-- description
@@ -56,6 +56,17 @@ Options:SetScript("OnShow", function(self)
 		end);	-- onClick
 	DisplayLock2:SetChecked(SQS.PWRSHIFT);
 	DisplayLock2:SetPoint("TOPLEFT", DisplayLock, "BOTTOMLEFT", 0, -12);
+
+
+	-- Display On/Off Powershift
+	local DisplayLock3 = makeCheckbox(
+		"Global Cooldown / Casting Warning",									-- label
+		"If Enabled a Active Global Cooldown will be displayed on the Shift Buttons as Indicator that a shift may not be possible. It's just a visual reminder of a active Global Cooldown.",	-- description
+		function(self, value)
+			SQS.GCD = value
+		end);	-- onClick
+	DisplayLock3:SetChecked(SQS.GCD);
+	DisplayLock3:SetPoint("TOPLEFT", DisplayLock2, "BOTTOMLEFT", 0, -12);
 
 	self:SetScript("OnShow", nil);
 end);

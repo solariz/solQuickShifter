@@ -33,6 +33,15 @@ function SQS_UpdateButtonDisplay()
 			end;
 		end
 	end
+	-- check GCD Function for casting or Global Cooldown
+	-- If so show the warning
+	if SQS.GCD == true then
+		if SQS_IsGlobalCooldown() == true then
+			solQuickShifterFrameGCD:Show()
+		else 
+			solQuickShifterFrameGCD:Hide()
+		end
+	end
 end
 
 function SQS_CheckNoMana(FormNum)
@@ -185,4 +194,14 @@ function SQS_GetMacro(FormNum)
 	end
 end
 
+function SQS_IsGlobalCooldown()
+	-- 61304 is the 'Global Cooldown' spell
+	local _, duration = GetSpellCooldown(61304)
+	local spell, _ = CastingInfo("player")
  
+	-- Check for duration left
+	if duration > 0 or spell ~= nil then
+		return true
+	end
+	return false
+end
