@@ -1,5 +1,5 @@
-# 2019-10-04    v2.04
-- Global Cooldown feature, working on it
+# 2019-10-05    v2.04
+- The Shift Overlay can now display a optional message if the Global Cooldown or a Spellcast is in progress which will prevent Shapeshifting, can be turned on/off in settings
 
 # 2019-10-01    v2.03
 - fix for option lua error
