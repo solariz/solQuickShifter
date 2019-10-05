@@ -42,6 +42,26 @@ function SQS_UpdateButtonDisplay()
 			solQuickShifterFrameGCD:Hide()
 		end
 	end
+
+	-- Mounted Check
+	if IsMounted() then
+		SQS_BTN_9:Hide();
+		SQS_BTN_10:Show();
+		SQS_debug("mounted")
+	else
+		local MountExists, _ =  SQS_GetMountName()
+		if GetShapeshiftForm() == 0 and MountExists then
+			-- not Mounted and in Humanoid form 
+			SQS_BTN_9:Hide();
+			SQS_BTN_10:Show();	
+		else
+			-- not Monunted but shapeshifted
+			SQS_BTN_9:Show();
+			SQS_BTN_10:Hide();
+		end
+		
+		SQS_debug("NOT mounted")
+	end
 end
 
 function SQS_CheckNoMana(FormNum)
@@ -113,6 +133,9 @@ function SQS_CreateButton(FormNum)
 	elseif FormNum == 9 then
 		-- cancel form
 		Button:SetPoint("CENTER")
+	elseif FormNum == 10 then
+		-- cancel mount
+		Button:SetPoint("CENTER")		
 	end
 	Button.Texture = Button:CreateTexture(Button:GetName().."NormalTexture", "ARTWORK");
 	Button.Texture:SetTexture(SQS_GetDefaultIcon(FormNum));
@@ -151,6 +174,8 @@ function SQS_GetHoverIcon(FormNum)
 		return "interface\\icons\\inv_misc_monstertail_01"
 	elseif FormNum == 9 then
 		return "interface\\icons\\Spell_nature_wispsplode"
+	elseif FormNum == 10 then
+		return "interface\\icons\\inv_boots_03"		
 	end
 end
 
@@ -168,6 +193,14 @@ function SQS_GetDefaultIcon(FormNum)
 		return "interface\\icons\\spell_nature_forceofnature"
 	elseif FormNum == 9 then
 		return "interface\\icons\\spell_frost_wisp"
+	elseif FormNum == 10 then
+		-- check if we found a mount
+		local MountName, MountTexture = SQS_GetMountName()
+		if MountTexture then 
+			return MountTexture
+		else 
+			return "interface\\icons\\ability_hunter_beastcall"		
+		end
 	end
 end
 
@@ -189,6 +222,13 @@ function SQS_GetMacro(FormNum)
 		return "/dismount [mounted]\n/cancelform"..PowerShiftMacro.."\n/use [noform:"..FormNum.."] !"..L["SQS_4_TRAVEL"]
 	elseif FormNum == 5 then
 		return "/dismount [mounted]\n/cancelform"..PowerShiftMacro.."\n/use [noform:"..FormNum.."] !"..L["SQS_5_MOONKIN"]
+	elseif FormNum == 10 then
+		local MountName, _ = SQS_GetMountName()
+		if MountName ~= nil then
+			return "/cast [nomounted] "..MountName
+		else 
+			return "/dismount [mounted]"
+		end
 	else
 		return "/cancelform"
 	end
@@ -205,3 +245,41 @@ function SQS_IsGlobalCooldown()
 	end
 	return false
 end
+
+
+-- function for printing to chatframe if debug is enabled
+function SQS_debug(DebugMsg) 
+	if SQS_DEBUG == true then
+		DEFAULT_CHAT_FRAME:AddMessage(addon.."> "..DebugMsg)
+	end
+end
+
+function SQS_GetMountName()
+	for b=0,4 do
+		for s=1,GetContainerNumSlots(b) do
+			a=GetContainerItemLink(b,s)if a then
+				if string.find(a,L["SQS_MOUNT_HORN"]) or
+				   string.find(a,L["SQS_MOUNT_WHISTLE"]) or
+				   string.find(a,L["SQS_MOUNT_REINS"]) or
+				   string.find(a,L["SQS_MOUNT_KODO_1"]) or
+				   string.find(a,L["SQS_MOUNT_KODO_2"]) or
+				   string.find(a,L["SQS_MOUNT_KODO_3"]) or
+				   string.find(a,L["SQS_MOUNT_KODO_4"])	   
+				 then
+					SQS_debug("Maybe found a Mount: "..a.." Container: "..b.." Slot: "..s)
+					local MountName, _, _, ItemLevel, _, _, _, _, _, ItemTexture = GetItemInfo(GetContainerItemID(b,s));
+					if ItemLevel >= 40 then
+						SQS_debug("Item Name: "..MountName)
+						SQS_debug("Item Texture: "..ItemTexture)
+						SQS_debug("Item Level: "..ItemLevel)
+						-- set texture of Button 10
+						return MountName,ItemTexture
+					end
+				end
+			end
+		end
+	end
+	return false
+end
+
+

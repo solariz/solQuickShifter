@@ -1,8 +1,10 @@
 BINDING_HEADER_solQuickShifter = "solQuickShifter"
 _G["BINDING_NAME_CLICK solQuickShifter:LeftButton"] = "Show Shift Selection (hold key)"
 
-VER = "2.04"
+VER = "2.05"
 addon = "|cffaad372".."sol".."|cfffff468".."QuickShifter".."|cffffffff v"..VER;
+SQS_DEBUG = false -- set to true to get debug infos, careful - spams your chat.
+
 
 -- ////// MAIN
 L = {}
@@ -14,6 +16,13 @@ if (GetLocale() == 'deDE') then
 	L["SQS_3_CAT"] = "Katzengestalt"
 	L["SQS_4_TRAVEL"] = "Reisegestalt"
 	L["SQS_5_MOONKIN"] = "Moonkingestalt"
+	L["SQS_MOUNT_KODO_1"] = "Grauer Kodo"
+	L["SQS_MOUNT_KODO_2"] = "Brauner Kodo"
+	L["SQS_MOUNT_KODO_3"] = "weißer Kodo"
+	L["SQS_MOUNT_KODO_4"] = "goldener Kodo"
+	L["SQS_MOUNT_REINS"] = "Zügel des"
+	L["SQS_MOUNT_HORN"] = "Horn des"
+	L["SQS_MOUNT_WHISTLE"] = "Pfeife des"
 else
 	L["SQS_1_BEAR"] = "Bear Form"
 	L["SQS_1_DIREBEAR"] = "Dire Bear Form"
@@ -21,6 +30,13 @@ else
 	L["SQS_3_CAT"] = "Cat Form"
 	L["SQS_4_TRAVEL"] = "Travel Form"
 	L["SQS_5_MOONKIN"] = "Moonkin Form"
+	L["SQS_MOUNT_KODO_1"] = "Teal Kodo"
+	L["SQS_MOUNT_KODO_2"] = "Brown Kodo"
+	L["SQS_MOUNT_KODO_3"] = "White Kodo"
+	L["SQS_MOUNT_KODO_4"] = "Golden Kodo"	
+	L["SQS_MOUNT_REINS"] = "Reins of"
+	L["SQS_MOUNT_HORN"] = "Horn of"
+	L["SQS_MOUNT_WHISTLE"] = "Whistle of"
 end
 
 
@@ -39,10 +55,13 @@ end
 		solQuickShifterFrameGCD:Hide()
 
 -- register events
-	solQuickShifterFrame:RegisterEvent("PORTRAITS_UPDATED")
+	--solQuickShifterFrame:RegisterEvent("PORTRAITS_UPDATED")
 	solQuickShifterFrame:RegisterEvent("UNIT_POWER_UPDATE")
 	solQuickShifterFrame:RegisterEvent("ADDON_LOADED")
 	solQuickShifterFrame:RegisterEvent("ACTIONBAR_UPDATE_COOLDOWN")
+	solQuickShifterFrame:RegisterEvent("PLAYER_MOUNT_DISPLAY_CHANGED")
+
+	
 
 	solQuickShifterFrame:SetScript("OnEvent", function(self, event, arg1, ...)
 		if event == "ADDON_LOADED" and arg1 == "solQuickShifter" then
@@ -65,6 +84,7 @@ end
 			SQS_CreateButton(4); -- Travel Form
 			SQS_CreateButton(5); -- Moonkin Form
 			SQS_CreateButton(9); -- cancel form
+			SQS_CreateButton(10); -- unmount
 			SQS_LOADED = true;
 		else
 			if SQS_LOADED == true and type(SQS) then
@@ -97,4 +117,5 @@ local	toggleframe = CreateFrame("Button","solQuickShifter",UIParent,"SecureHandl
 		]])
 
 
--- ok, we're done
+-- ok, we're doneq
+SQS_debug("+++ DEBUG ENABLED +++");
