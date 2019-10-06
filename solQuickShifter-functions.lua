@@ -47,20 +47,21 @@ function SQS_UpdateButtonDisplay()
 	if IsMounted() then
 		SQS_BTN_9:Hide();
 		SQS_BTN_10:Show();
-		SQS_debug("mounted")
+		SQS_debug("M")
 	else
 		local MountExists, _ =  SQS_GetMountName()
 		if GetShapeshiftForm() == 0 and MountExists then
 			-- not Mounted and in Humanoid form 
 			SQS_BTN_9:Hide();
 			SQS_BTN_10:Show();	
+			SQS_debug("NM:H")
 		else
 			-- not Monunted but shapeshifted
 			SQS_BTN_9:Show();
 			SQS_BTN_10:Hide();
+			SQS_debug("NM:S")
 		end
-		
-		SQS_debug("NOT mounted")
+		-- SQS_debug("NOT mounted")
 	end
 end
 
@@ -224,10 +225,10 @@ function SQS_GetMacro(FormNum)
 		return "/dismount [mounted]\n/cancelform"..PowerShiftMacro.."\n/use [noform:"..FormNum.."] !"..L["SQS_5_MOONKIN"]
 	elseif FormNum == 10 then
 		local MountName, _ = SQS_GetMountName()
-		if MountName ~= nil then
-			return "/cast [nomounted] "..MountName
+		if MountName then
+			return "/dismount [mounted]\n/cast [nomounted] "..MountName.."\n/cancelform"
 		else 
-			return "/dismount [mounted]"
+			return "/dismount [mounted]\n/cancelform"
 		end
 	else
 		return "/cancelform"
@@ -254,7 +255,42 @@ function SQS_debug(DebugMsg)
 	end
 end
 
+
+-- function to get the players mount
+-- returns: { <string>mount name, <int> Mount Icon, <int> timestamp when found }
 function SQS_GetMountName()
+	-- if Option to DISABLE Mount Feature is checked quit here
+	if SQS.disableMount == true then
+		return false
+	end
+	-- Check if Player reached Level 40, if not we do not need to continue further
+	if UnitLevel("player") < 40 then
+		return false
+	end
+	-- maybe we found it previously?
+	if SQS_MOUNT ~= nil and #SQS_MOUNT > 0 then
+		-- we use a timestamp to cache a bit, if the last check time is > 60s we check again
+		-- if not we return what we last found. This prevents going through all bag items
+		-- on every event call.
+		local SecAgo = time()-SQS_MOUNT[3]
+		-- cache 5 min
+		if SecAgo <= 300 then
+			return SQS_MOUNT[1], SQS_MOUNT[2]
+		end
+	end
+
+	-- not checking if player is in Fight
+	if UnitAffectingCombat("player") then
+		if SQS_MOUNT ~= nil and #SQS_MOUNT > 0 then
+			SQS_debug("IN FIGHT: Returnung prev found")
+			return SQS_MOUNT[1], SQS_MOUNT[2]
+		else
+			SQS_debug("IN FIGHT: Returnung FALSE")
+			return false
+		end
+	end
+
+	-- parsing the players bags for a mount
 	for b=0,4 do
 		for s=1,GetContainerNumSlots(b) do
 			a=GetContainerItemLink(b,s)if a then
@@ -266,19 +302,23 @@ function SQS_GetMountName()
 				   string.find(a,L["SQS_MOUNT_KODO_3"]) or
 				   string.find(a,L["SQS_MOUNT_KODO_4"])	   
 				 then
-					SQS_debug("Maybe found a Mount: "..a.." Container: "..b.." Slot: "..s)
 					local MountName, _, _, ItemLevel, _, _, _, _, _, ItemTexture = GetItemInfo(GetContainerItemID(b,s));
+					-- double check that it is a lvl 40+ Item to be sure to have a mount
 					if ItemLevel >= 40 then
-						SQS_debug("Item Name: "..MountName)
-						SQS_debug("Item Texture: "..ItemTexture)
-						SQS_debug("Item Level: "..ItemLevel)
+						-- SQS_debug("Item Name: "..MountName)
+						-- SQS_debug("Item Texture: "..ItemTexture)
+						-- SQS_debug("Item Level: "..ItemLevel)
 						-- set texture of Button 10
-						return MountName,ItemTexture
+						SQS_debug("found Mount: "..a.." Container: "..b.." Slot: "..s)
+						SQS_MOUNT = {MountName, ItemTexture, time()}
+						return MountName, ItemTexture
 					end
 				end
 			end
 		end
 	end
+	-- seems no mount was found
+	SQS_debug("searched for a Mount but couldnt find anything, return = false.")
 	return false
 end
 

@@ -4,7 +4,7 @@ _G["BINDING_NAME_CLICK solQuickShifter:LeftButton"] = "Show Shift Selection (hol
 VER = "2.05"
 addon = "|cffaad372".."sol".."|cfffff468".."QuickShifter".."|cffffffff v"..VER;
 SQS_DEBUG = false -- set to true to get debug infos, careful - spams your chat.
-
+SQS_MOUNT = {}
 
 -- ////// MAIN
 L = {}
@@ -55,13 +55,12 @@ end
 		solQuickShifterFrameGCD:Hide()
 
 -- register events
-	--solQuickShifterFrame:RegisterEvent("PORTRAITS_UPDATED")
+	solQuickShifterFrame:RegisterEvent("UPDATE_SHAPESHIFT_FORM")
 	solQuickShifterFrame:RegisterEvent("UNIT_POWER_UPDATE")
 	solQuickShifterFrame:RegisterEvent("ADDON_LOADED")
 	solQuickShifterFrame:RegisterEvent("ACTIONBAR_UPDATE_COOLDOWN")
 	solQuickShifterFrame:RegisterEvent("PLAYER_MOUNT_DISPLAY_CHANGED")
-
-	
+	solQuickShifterFrame:RegisterEvent("BAG_UPDATE")	
 
 	solQuickShifterFrame:SetScript("OnEvent", function(self, event, arg1, ...)
 		if event == "ADDON_LOADED" and arg1 == "solQuickShifter" then
@@ -72,6 +71,7 @@ end
 				SQS.OOM = true
 				SQS.GCD = true
 				SQS.PWRSHIFT = false
+				SQS.disableMount = false
 				DEFAULT_CHAT_FRAME:AddMessage(addon.." Settings default set.")
 				_G["SQS"] = SQS
 			else
@@ -88,8 +88,12 @@ end
 			SQS_LOADED = true;
 		else
 			if SQS_LOADED == true and type(SQS) then
-				SQS_UpdateButtonDisplay()
-				SQS_IsGlobalCooldown()
+				if event == "BAG_UPDATE" then
+					-- this is for the mount Info, we're just resetting the Cache here
+					SQS_MOUNT[3] = time()-3600
+				else
+					SQS_UpdateButtonDisplay()
+				end
 			end
 		end
 	end)
