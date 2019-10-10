@@ -160,6 +160,21 @@ function SQS_CreateButton(FormNum)
 	Button:SetAttribute("macrotext",SQS_GetMacro(FormNum))
 end
 
+function SQS_UpdateButton(UpdateButton,FormNum)
+	UpdateButton:SetAttribute("macrotext",SQS_GetMacro(FormNum))
+	UpdateButton.Texture:SetTexture(SQS_GetDefaultIcon(FormNum));
+	UpdateButton:SetScript("OnEnter", function(self, ...)
+		self.Texture:ClearAllPoints();
+		self.Texture:SetTexture(SQS_GetHoverIcon(FormNum));
+		self.Texture:SetPoint("TOPLEFT", -5, 5);
+		self.Texture:SetPoint("BOTTOMRIGHT", 5, -5);
+	end);
+	UpdateButton:SetScript("OnLeave", function(self, ...)
+		self.Texture:SetAllPoints();
+		self.Texture:SetTexture(SQS_GetDefaultIcon(FormNum));
+	end);
+end
+
 
 function SQS_GetHoverIcon(FormNum)
 	-- retun a icon for each form button hover
@@ -214,7 +229,7 @@ function SQS_GetMacro(FormNum)
 	end
 
 	if FormNum == 1 then
-		return "/dismount [mounted]\n/cancelform"..PowerShiftMacro.."\n/use [noform:"..FormNum.."] !"..L["SQS_1_DIREBEAR"].."\n/use [noform:"..FormNum.."]"..L["SQS_1_BEAR"]
+		return "#showtooltip\n/dismount [mounted]\n/cancelform"..PowerShiftMacro.."\n/use [noform:"..FormNum.."] !"..L["SQS_1_DIREBEAR"].."\n/use [noform:"..FormNum.."]"..L["SQS_1_BEAR"]
 	elseif FormNum == 2 then
 		return "/dismount [mounted]\n/cancelform"..PowerShiftMacro.."\n/use [noform:"..FormNum..",swimming] !"..L["SQS_2_AQUATIC"]
 	elseif FormNum == 3 then
@@ -311,6 +326,8 @@ function SQS_GetMountName()
 						-- set texture of Button 10
 						SQS_debug("found Mount: "..a.." Container: "..b.." Slot: "..s)
 						SQS_MOUNT = {MountName, ItemTexture, time()}
+						-- updating button for mounting
+						SQS_UpdateButton(SQS_BTN_10, 10)
 						return MountName, ItemTexture
 					end
 				end
