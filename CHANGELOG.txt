@@ -1,3 +1,7 @@
+# 2019-10-29    v2.06
+- if char is not a druid addon will not be active
+- fix for the EN Gray Kodo 
+
 # 2019-10-05    v2.05
 - Better Integration for Mount and Dismounting. If you have a known Mount in your bag the addon try to mount the first Mount it finds.
   This is active as long as: a mount is found, you are not shapeshifted
@@ -17,6 +21,6 @@
 - added settings menu
 
 # 2019-09-14
-- ported for WOW Classic, I'm again plaing a druid - this time FTH 
+- ported for WOW Classic, I'm again playing a druid - this time FTH 
 - changed several things to make it work in classic client, some things are a way different compared to 10 years ago when I left WOW 
   

@@ -1,10 +1,16 @@
 BINDING_HEADER_solQuickShifter = "solQuickShifter"
 _G["BINDING_NAME_CLICK solQuickShifter:LeftButton"] = "Show Shift Selection (hold key)"
 
-VER = "2.05"
+VER = "2.06"
 addon = "|cffaad372".."sol".."|cfffff468".."QuickShifter".."|cffffffff v"..VER;
 SQS_DEBUG = false -- set to true to get debug infos, careful - spams your chat.
 SQS_MOUNT = {}
+
+--  if player is not a druid quit
+if ((select(2,UnitClass("player"))) ~= "DRUID") then
+	DEFAULT_CHAT_FRAME:AddMessage(addon.." - This char is not a druid, Addon disabled.")
+	return;
+end;
 
 -- ////// MAIN
 L = {}
@@ -30,7 +36,7 @@ else
 	L["SQS_3_CAT"] = "Cat Form"
 	L["SQS_4_TRAVEL"] = "Travel Form"
 	L["SQS_5_MOONKIN"] = "Moonkin Form"
-	L["SQS_MOUNT_KODO_1"] = "Teal Kodo"
+	L["SQS_MOUNT_KODO_1"] = "Gray Kodo"
 	L["SQS_MOUNT_KODO_2"] = "Brown Kodo"
 	L["SQS_MOUNT_KODO_3"] = "White Kodo"
 	L["SQS_MOUNT_KODO_4"] = "Golden Kodo"	
